@@ -21,9 +21,21 @@ var User = sequelize.define('User', {
   },
 });
 
-sequelize.sync().success(function () {
+var Room = sequelize.define('Room', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+});
+
+sequelize.sync().then(function () {
   console.log('Database sync success');
-}).error(function (err) {
+}, function (err) {
   console.error(err);
 });
 
@@ -38,11 +50,21 @@ module.exports = {
   },
 
   changeAuthenticationLevel: function (userId, authenticationLevel) {
-    console.log(userId, authenticationLevel);
     return User.update({ authenticationLevel: authenticationLevel }, {
       where: {
         id: userId,
       },
+    });
+  },
+
+  getRooms: function () {
+    return Room.findAll();
+  },
+
+  createRoom: function (name, password) {
+    return Room.create({
+      name: name,
+      password: password,
     });
   },
 };

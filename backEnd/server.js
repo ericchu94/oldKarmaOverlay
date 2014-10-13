@@ -10,6 +10,8 @@ function Client(socket) {
   // register events
   this.on('login', Client.AuthenticationLevel.ANON, this.onLogin);
   this.on('changeAuthenticationLevel', Client.AuthenticationLevel.ADMIN, this.onChangeAuthenticationLevel);
+  this.on('listRooms', Client.AuthenticationLevel.USER, this.onListRooms);
+  this.on('createRoom', Client.AuthenticationLevel.OFFICER, this.onCreateRoom);
 }
 
 Client.AuthenticationLevel = {
@@ -19,11 +21,42 @@ Client.AuthenticationLevel = {
   ADMIN: 3,
 };
 
+Client.prototype.onCreateRoom = function (data) {
+  var client = this;
+  models.createRoom(data.name, data.password).then(function (data) {
+    var room = data.dataValues;
+    console.log(room);
+    client.emit('createRoomSuccess', room);
+  }, function (err) {
+    console.warn(err);
+    client.emit('createRoomFailure');
+  });
+};
+
+Client.prototype.onListRooms = function (data) {
+  var client = this;
+  models.getRooms().then(function (results) {
+    var rooms = [];
+
+    for (var i = 0; i < results.length; ++i) {
+      var result = results[i];
+      rooms.push(result.dataValues);
+    }
+
+    console.log(rooms);
+
+    client.emit('listRoomsSuccess', rooms);;
+  }, function (err) {
+    console.warn(err);
+    client.emit('listRoomsFailure');
+  });
+};
+
 Client.prototype.onChangeAuthenticationLevel = function (data) {
   var client = this;
-  models.changeAuthenticationLevel(data.userId, data.authenticationLevel).success(function () {
+  models.changeAuthenticationLevel(data.userId, data.authenticationLevel).then(function () {
     client.emit('changeAuthenticationLevelSuccess');
-  }).error(function (err) {
+  }, function (err) {
     console.warn(err);
     client.emit('changeAuthenticationLevelFailure');
   });
@@ -31,10 +64,11 @@ Client.prototype.onChangeAuthenticationLevel = function (data) {
 
 Client.prototype.onLogin = function (data) {
   var client = this;
-  models.login(data.username, data.password).success(function (user, created) {
-    client.user = user.dataValues;
-    client.emit('loginSuccess');
-  }).error(function (err) {
+  models.login(data.username, data.password).spread(function (result, created) {
+    var user = result.dataValues;
+    client.user = user;
+    client.emit('loginSuccess', user);
+  }, function (err) {
     console.warn(err);
     client.emit('loginFailure');
   });
