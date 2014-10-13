@@ -64,7 +64,17 @@ module.exports = {
   },
 
   getRooms: function () {
-    return Room.findAll();
+    return Room.findAll().then(function (results) {
+      for (var i = 0; i < results.length; ++i) {
+        var result = results[i];
+        var room = result.dataValues;
+        delete room.password;
+        delete room.createdAt;
+        delete room.updatedAt;
+        results[i] = room;
+      }
+      return results;
+    });
   },
 
   createRoom: function (name, password) {

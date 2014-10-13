@@ -32,17 +32,10 @@ Client.prototype.onCreateRoom = function (data) {
   });
 };
 
-Client.prototype.onListRooms = function (data) {
+Client.prototype.onListRooms = function () {
   var client = this;
-  models.getRooms().then(function (results) {
-    var rooms = [];
-
-    for (var i = 0; i < results.length; ++i) {
-      var result = results[i];
-      rooms.push(result.dataValues);
-    }
-
-    client.emit('listRoomsSuccess', rooms);;
+  models.getRooms().then(function (rooms) {
+    client.emit('listRoomsSuccess', rooms);
   }, function (err) {
     console.warn(err);
     client.emit('listRoomsError');
@@ -61,9 +54,7 @@ Client.prototype.onChangeAuthenticationLevel = function (data) {
 
 Client.prototype.onLogin = function (data) {
   var client = this;
-  models.login(data.username, data.password).then(function (result) {
-    console.log(result);
-    var user = result;
+  models.login(data.username, data.password).then(function (user) {
     client.user = user;
     client.emit('loginSuccess', user);
   }, function (err) {
