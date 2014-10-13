@@ -1,14 +1,14 @@
 {
-  "name": "karmaOverlayServer",
+  "name": "karmaOverlayClient",
   "version": "1.0.0",
-  "description": "Karma Overlay Server",
-  "main": "server.js",
+  "description": "Karma Overlay Client",
+  "main": "client.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Eric Chu",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "^1.1.0"
+    "socket.io-client": "^1.1.0"
   }
 }
