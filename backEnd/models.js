@@ -41,6 +41,16 @@ var Room = sequelize.define('Room', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+}, {
+  instanceMethods: {
+    getViewModel: function () {
+      var room = this.dataValues;
+      delete room.password;
+      delete room.createdAt;
+      delete room.updatedAt;
+      return room;
+    },
+  },
 });
 
 sequelize.sync().then(function () {
@@ -73,11 +83,7 @@ module.exports = {
     return Room.findAll().then(function (results) {
       for (var i = 0; i < results.length; ++i) {
         var result = results[i];
-        var room = result.dataValues;
-        delete room.password;
-        delete room.createdAt;
-        delete room.updatedAt;
-        results[i] = room;
+        results[i] = result.getViewModel();
       }
       return results;
     });
@@ -88,11 +94,7 @@ module.exports = {
       name: name,
       password: password,
     }).then(function (result) {
-      var room = result.dataValues;
-      delete room.password;
-      delete room.createdAt;
-      delete room.updatedAt;
-      return room;
+      return result.getViewModel();
     });
   },
 };
