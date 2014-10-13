@@ -18,22 +18,32 @@ Client.AuthenticationLevel = {
   ADMIN: 3,
 };
 
+Client.prototype.onChangeAuthenticationLevel = function (data) {
+  var client = this;
+  models.changeAuthenticationLevel(data.userId, data.authenticationLevel).success(function () {
+    client.emit('changeAuthenticationLevelSuccess');
+  }).error(function (err) {
+    console.warn(err);
+    client.emit('changeAuthenticationLevelFailure');
+  });
+};
+
 Client.prototype.onLogin = function (data) {
-  debugger;
-  var user = models.login(data.username, data.password);
-  if (user) {
-    this.user = user;
-    this.emit('loginSuccess');
-  } else {
-    this.emit('loginFailure');
-  }
+  var client = this;
+  models.login(data.username, data.password).success(function (user, created) {
+    client.user = user.dataValues;
+    client.emit('loginSuccess');
+  }).error(function (err) {
+    console.warn(err);
+    client.emit('loginFailure');
+  });
 };
 
 Client.prototype.getAuthenticationLevel = function (data) {
   var level = Client.AuthenticationLevel.ANON;
 
   if (this.user) {
-    level = Client.AuthenticationLevel.USER;
+    return this.user.authenticationLevel;
   }
 
   return level;

@@ -9,6 +9,8 @@
   "author": "Eric Chu",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "^1.1.0"
+    "sequelize": "^2.0.0-rc1",
+    "socket.io": "^1.1.0",
+    "sqlite3": "^3.0.2"
   }
 }
