@@ -8,8 +8,15 @@ function Client(socket) {
   this.user = null;
 
   // register events
-  this.on('login', this.onLogin);
+  this.on('login', Client.AuthenticationLevel.ANON, this.onLogin);
 }
+
+Client.AuthenticationLevel = {
+  ANON: 0,
+  USER: 1,
+  OFFICER: 2,
+  ADMIN: 3,
+};
 
 Client.prototype.onLogin = function (data) {
   debugger;
@@ -22,10 +29,25 @@ Client.prototype.onLogin = function (data) {
   }
 };
 
-Client.prototype.on = function (name, fn) {
+Client.prototype.getAuthenticationLevel = function (data) {
+  var level = Client.AuthenticationLevel.ANON;
+
+  if (this.user) {
+    level = Client.AuthenticationLevel.USER;
+  }
+
+  return level;
+};
+
+Client.prototype.on = function (name, authLevel, fn) {
   console.info('Registering handler for ' + name);
   var client = this;
   this.socket.on(name, function (data) {
+    if (client.getAuthenticationLevel() < authLevel) {
+      console.warn('Insufficient priviledges to handle event: ' + name);
+      return;
+    }
+
     console.info('Handling event: ' + name);
     fn.call(client, data);
   });
