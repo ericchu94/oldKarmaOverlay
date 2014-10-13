@@ -61,8 +61,9 @@ Client.prototype.onChangeAuthenticationLevel = function (data) {
 
 Client.prototype.onLogin = function (data) {
   var client = this;
-  models.login(data.username, data.password).spread(function (result, created) {
-    var user = result.dataValues;
+  models.login(data.username, data.password).then(function (result) {
+    console.log(result);
+    var user = result;
     client.user = user;
     client.emit('loginSuccess', user);
   }, function (err) {

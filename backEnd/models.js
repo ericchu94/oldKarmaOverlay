@@ -46,6 +46,12 @@ module.exports = {
         username: username,
         password: password,
       }
+    }).spread(function (result, created) {
+      var user = result.dataValues;
+      delete user.password;
+      delete user.createdAt;
+      delete user.updatedAt;
+      return result.dataValues;
     });
   },
 
