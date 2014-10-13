@@ -1,7 +1,7 @@
 var port = 1864;
 var models = require('./models');
 var io = require('socket.io')(port);
-console.info('Server listening on ' + 1864);
+console.info('Server listening on ' + port);
 
 function Client(socket) {
   this.socket = socket;
