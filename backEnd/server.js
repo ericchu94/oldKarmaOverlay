@@ -25,7 +25,6 @@ Client.prototype.onCreateRoom = function (data) {
   var client = this;
   models.createRoom(data.name, data.password).then(function (data) {
     var room = data.dataValues;
-    console.log(room);
     client.emit('createRoomSuccess', room);
   }, function (err) {
     console.warn(err);
@@ -42,8 +41,6 @@ Client.prototype.onListRooms = function (data) {
       var result = results[i];
       rooms.push(result.dataValues);
     }
-
-    console.log(rooms);
 
     client.emit('listRoomsSuccess', rooms);;
   }, function (err) {
