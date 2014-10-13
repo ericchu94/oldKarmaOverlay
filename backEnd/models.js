@@ -36,4 +36,13 @@ module.exports = {
       }
     });
   },
+
+  changeAuthenticationLevel: function (userId, authenticationLevel) {
+    console.log(userId, authenticationLevel);
+    return User.update({ authenticationLevel: authenticationLevel }, {
+      where: {
+        id: userId,
+      },
+    });
+  },
 };

@@ -9,6 +9,7 @@ function Client(socket) {
 
   // register events
   this.on('login', Client.AuthenticationLevel.ANON, this.onLogin);
+  this.on('changeAuthenticationLevel', Client.AuthenticationLevel.ADMIN, this.onChangeAuthenticationLevel);
 }
 
 Client.AuthenticationLevel = {
