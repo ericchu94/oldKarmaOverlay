@@ -19,6 +19,16 @@ var User = sequelize.define('User', {
     allowNull: false,
     defaultValue: 1,
   },
+}, {
+  instanceMethods: {
+    getViewModel: function () {
+      var user = this.dataValues;
+      delete user.password;
+      delete user.createdAt;
+      delete user.updatedAt;
+      return user;
+    },
+  },
 });
 
 var Room = sequelize.define('Room', {
@@ -47,11 +57,7 @@ module.exports = {
         password: password,
       }
     }).spread(function (result, created) {
-      var user = result.dataValues;
-      delete user.password;
-      delete user.createdAt;
-      delete user.updatedAt;
-      return user;
+      return result.getViewModel();
     });
   },
 
