@@ -54,7 +54,7 @@ socket.on('createRoomSuccess', function (data) {
   console.log('Create room success');
 });
 
-socket.on('createRoomFailure', function (data) {
+socket.on('createRoomError', function (data) {
   console.log('Create room failure');
 });
 
@@ -62,7 +62,7 @@ socket.on('listRoomsSuccess', function (data) {
   console.log('List rooms success');
 });
 
-socket.on('listRoomsFailure', function (data) {
+socket.on('listRoomsError', function (data) {
   console.log('List rooms failure');
 });
 
@@ -71,7 +71,7 @@ socket.on('loginSuccess', function (data) {
   user = data;
 });
 
-socket.on('loginFailure', function () {
+socket.on('loginError', function () {
   console.log('Login failure');
 });
 
@@ -79,7 +79,7 @@ socket.on('changeAuthenticationLevelSuccess', function () {
   console.log('Change authentication level success');
 });
 
-socket.on('changeAuthenticationLevelFailure', function () {
+socket.on('changeAuthenticationLevelError', function () {
   console.log('Change authentication level failure');
 });
 

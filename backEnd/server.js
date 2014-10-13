@@ -29,7 +29,7 @@ Client.prototype.onCreateRoom = function (data) {
     client.emit('createRoomSuccess', room);
   }, function (err) {
     console.warn(err);
-    client.emit('createRoomFailure');
+    client.emit('createRoomError');
   });
 };
 
@@ -48,7 +48,7 @@ Client.prototype.onListRooms = function (data) {
     client.emit('listRoomsSuccess', rooms);;
   }, function (err) {
     console.warn(err);
-    client.emit('listRoomsFailure');
+    client.emit('listRoomsError');
   });
 };
 
@@ -58,7 +58,7 @@ Client.prototype.onChangeAuthenticationLevel = function (data) {
     client.emit('changeAuthenticationLevelSuccess');
   }, function (err) {
     console.warn(err);
-    client.emit('changeAuthenticationLevelFailure');
+    client.emit('changeAuthenticationLevelError');
   });
 };
 
@@ -70,7 +70,7 @@ Client.prototype.onLogin = function (data) {
     client.emit('loginSuccess', user);
   }, function (err) {
     console.warn(err);
-    client.emit('loginFailure');
+    client.emit('loginError');
   });
 };
 
