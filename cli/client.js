@@ -23,7 +23,13 @@ var commands = {
     fn: function (splitted) {
       socket.emit('createRoom', { name: splitted[1], password: splitted[2] });
     },
-    verbose: 'createRoom',
+    verbose: 'createRoom NAME PASSWORD',
+  },
+  dr: {
+    fn: function (splitted) {
+      socket.emit('destroyRoom', { roomId: splitted[1] });
+    },
+    verbose: 'destroyRoom ROOMID',
   },
 }
 

@@ -97,4 +97,12 @@ module.exports = {
       return result.getViewModel();
     });
   },
+
+  destroyRoom: function (roomId) {
+    return Room.destroy({
+      where: {
+        id: roomId,
+      },
+    });
+  },
 };

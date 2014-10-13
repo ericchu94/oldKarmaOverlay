@@ -12,6 +12,7 @@ function Client(socket) {
   this.on('changeAuthenticationLevel', Client.AuthenticationLevel.ADMIN, this.onChangeAuthenticationLevel);
   this.on('listRooms', Client.AuthenticationLevel.USER, this.onListRooms);
   this.on('createRoom', Client.AuthenticationLevel.OFFICER, this.onCreateRoom);
+  this.on('destroyRoom', Client.AuthenticationLevel.OFFICER, this.onDestroyRoom);
 }
 
 Client.AuthenticationLevel = {
@@ -19,6 +20,16 @@ Client.AuthenticationLevel = {
   USER: 1,
   OFFICER: 2,
   ADMIN: 3,
+};
+
+Client.prototype.onDestroyRoom = function (data) {
+  var client = this;
+  models.destroyRoom(data.roomId).then(function () {
+    client.emit('destroyRoomSuccess');
+  }, function (err) {
+    console.warn(err);
+    client.emit('destroyRoomError');
+  });
 };
 
 Client.prototype.onCreateRoom = function (data) {
