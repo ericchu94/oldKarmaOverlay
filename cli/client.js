@@ -52,14 +52,16 @@ var user = null;
 
 socket.on('createRoomSuccess', function (data) {
   console.log('Create room success');
+  console.log(data);
 });
 
-socket.on('createRoomError', function (data) {
+socket.on('createRoomError', function () {
   console.log('Create room failure');
 });
 
 socket.on('listRoomsSuccess', function (data) {
   console.log('List rooms success');
+  console.log(data);
 });
 
 socket.on('listRoomsError', function (data) {
@@ -68,6 +70,7 @@ socket.on('listRoomsError', function (data) {
 
 socket.on('loginSuccess', function (data) {
   console.log('Login success');
+  console.log(data);
   user = data;
 });
 

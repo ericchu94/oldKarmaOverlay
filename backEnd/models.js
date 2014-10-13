@@ -51,7 +51,7 @@ module.exports = {
       delete user.password;
       delete user.createdAt;
       delete user.updatedAt;
-      return result.dataValues;
+      return user;
     });
   },
 
@@ -81,6 +81,12 @@ module.exports = {
     return Room.create({
       name: name,
       password: password,
+    }).then(function (result) {
+      var room = result.dataValues;
+      delete room.password;
+      delete room.createdAt;
+      delete room.updatedAt;
+      return room;
     });
   },
 };

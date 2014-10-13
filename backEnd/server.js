@@ -23,8 +23,7 @@ Client.AuthenticationLevel = {
 
 Client.prototype.onCreateRoom = function (data) {
   var client = this;
-  models.createRoom(data.name, data.password).then(function (data) {
-    var room = data.dataValues;
+  models.createRoom(data.name, data.password).then(function (room) {
     client.emit('createRoomSuccess', room);
   }, function (err) {
     console.warn(err);
