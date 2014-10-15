@@ -23,10 +23,11 @@ var User = sequelize.define('User', {
   instanceMethods: {
     getViewModel: function () {
       var user = this.dataValues;
-      delete user.password;
-      delete user.createdAt;
-      delete user.updatedAt;
-      return user;
+      return {
+        id: user.id,
+        username: user.username,
+        authenticationLevel: user.authenticationLevel,
+      };
     },
   },
 });
@@ -45,10 +46,10 @@ var Room = sequelize.define('Room', {
   instanceMethods: {
     getViewModel: function () {
       var room = this.dataValues;
-      delete room.password;
-      delete room.createdAt;
-      delete room.updatedAt;
-      return room;
+      return {
+        id: room.id,
+        name: room.name,
+      };
     },
   },
 });
