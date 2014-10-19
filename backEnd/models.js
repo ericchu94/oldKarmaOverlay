@@ -68,7 +68,10 @@ module.exports = {
         password: password,
       }
     }).spread(function (result, created) {
-      return result.getViewModel();
+      if (!result) {
+        throw new Error('User not found');
+      }
+      return result;
     });
   },
 
@@ -82,10 +85,6 @@ module.exports = {
 
   getRooms: function () {
     return Room.findAll().then(function (results) {
-      for (var i = 0; i < results.length; ++i) {
-        var result = results[i];
-        results[i] = result.getViewModel();
-      }
       return results;
     });
   },
@@ -95,7 +94,7 @@ module.exports = {
       name: name,
       password: password,
     }).then(function (result) {
-      return result.getViewModel();
+      return result;
     });
   },
 

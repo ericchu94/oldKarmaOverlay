@@ -35,7 +35,7 @@ Client.prototype.onDestroyRoom = function (data) {
 Client.prototype.onCreateRoom = function (data) {
   var client = this;
   models.createRoom(data.name, data.password).then(function (room) {
-    client.emit('createRoomSuccess', room);
+    client.emit('createRoomSuccess', room.getViewModel());
   }, function (err) {
     console.warn(err);
     client.emit('createRoomError');
@@ -45,6 +45,9 @@ Client.prototype.onCreateRoom = function (data) {
 Client.prototype.onListRooms = function () {
   var client = this;
   models.getRooms().then(function (rooms) {
+    for (var i = 0; i < rooms.length; ++i) {
+      rooms[i] = rooms[i].getViewModel();
+    }
     client.emit('listRoomsSuccess', rooms);
   }, function (err) {
     console.warn(err);
@@ -66,7 +69,7 @@ Client.prototype.onLogin = function (data) {
   var client = this;
   models.login(data.username, data.password).then(function (user) {
     client.user = user;
-    client.emit('loginSuccess', user);
+    client.emit('loginSuccess', user.getViewModel());
   }, function (err) {
     console.warn(err);
     client.emit('loginError');
